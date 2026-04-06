@@ -1,4 +1,5 @@
-﻿using LiveSimulation.Models;
+﻿using LiveSimulation.GameModels;
+using LiveSimulation.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,10 +8,12 @@ namespace LiveSimulation
 {
     public class Game1 : Game
     {
-        private const int PreferredWidth = 1280;
+        private const int PreferredWidth = 1283;
         private const int PreferredHeight = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        private GameObject _gameObject;
 
         public Game1()
         {
@@ -24,6 +27,9 @@ namespace LiveSimulation
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            var grid = CreateGrid();
+            grid.InitializeCells();
+            _gameObject = new Fly(200, 100, grid);
 
             base.Initialize();
         }
@@ -58,14 +64,19 @@ namespace LiveSimulation
         {
             var _pixel = new Texture2D(GraphicsDevice, 1, 1);
             _pixel.SetData(new[] { Color.White });
+
+            var x = _gameObject.X;
+            var y = _gameObject.Y;
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_pixel, new Rectangle(100, 100, 10, 10), Color.Red);
+            _spriteBatch.Draw(_pixel, new Rectangle((int)x, (int)y, 10, 10), Color.Red);
             _spriteBatch.End();
         }
 
-        private void InitGameObjects()
+        private Grid CreateGrid()
         {
-            var grid = new Grid();
+            var grid = new Grid(PreferredWidth, PreferredHeight, 10);
+
+            return grid;
         }
     }
 }
