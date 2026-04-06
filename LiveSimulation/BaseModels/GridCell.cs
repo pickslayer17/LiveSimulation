@@ -4,11 +4,19 @@ namespace LiveSimulation.Models;
 
 public class GridCell
 {
+    public int XCoordinate { get; set; }
+    public int YCoordinate { get; set; }
+    public int XSideSize { get; set; }
+    public int YSideSize { get; set; }
     public List<GameObject> GameObjects { get; set; }
 
-    public GridCell()
+    public GridCell(int xCoordinate, int yCoordinate, int xSideSize, int ySideSize)
     {
         GameObjects = new List<GameObject>();
+        XCoordinate = xCoordinate;
+        YCoordinate = yCoordinate;
+        XSideSize = xSideSize;
+        YSideSize = ySideSize;
     }
 
     public bool AddGameObject(GameObject gameObject)
@@ -23,8 +31,8 @@ public class GridCell
         return true;
     }
 
-    public void RemoveGameObject(GameObject gameObject)
+    public bool RemoveGameObject(GameObject gameObject)
     {
-        GameObjects.Remove(gameObject);
+        return GameObjects.Remove(gameObject);
     }
 }

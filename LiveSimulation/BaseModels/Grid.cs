@@ -1,46 +1,71 @@
-﻿namespace LiveSimulation.Models;
+﻿using System;
+
+namespace LiveSimulation.Models;
 
 public class Grid
 {
-    public int GridSize { get; private set; }
-    public double CellSize { get; private set; } = 1.0;
+    public readonly int GridPixelSizeX; 
+    public readonly int GridPixelSizeY;
+    public readonly int CellSideSize;
+    public int CellsX { get; private set; }
+    public int CellsY { get; private set; }
+
     private GridCell[,] Cells { get; set; }
-    private (double X, double Y) TotalSize => (GridSize * (int)CellSize, GridSize * (int)CellSize);
 
-    public Grid(int gridSize)
+    public Grid(int gridPixelSizeX, int gridPixelSizeY, int cellSideSize)
     {
-        GridSize = gridSize;
-        Cells = new GridCell[gridSize, gridSize];
-        InitializeCells();
+        GridPixelSizeX = gridPixelSizeX;
+        GridPixelSizeY = gridPixelSizeY;
+        CellSideSize = cellSideSize;
     }
 
-    public bool LinkGameObject(GameObject gameObject)
+    public void InitializeCells()
     {
-        if (IsWithinBounds(gameObject.X, gameObject.Y))
-        {
-            var cell = Cells[(int)(gameObject.X / CellSize), (int)(gameObject.Y / CellSize)];
+        CellsX = (int)(GridPixelSizeX / CellSideSize);
+        int restX = GridPixelSizeX % CellSideSize;
+        if (restX > 0)
+            CellsX++;
 
-            return cell.AddGameObject(gameObject);
-        }
-        else
-        {
-            return false;
-        }
-    }
+        CellsY = (int)(GridPixelSizeY / CellSideSize);
+        int restY = GridPixelSizeY % CellSideSize;
+        if (restY > 0)
+            CellsY++;
 
-    private void InitializeCells()
-    {
-        for (int x = 0; x < GridSize; x++)
+        Cells = new GridCell[CellsX, CellsY];
+        for (int x = 0; x < CellsX; x++)
         {
-            for (int y = 0; y < GridSize; y++)
+            for (int y = 0; y < CellsY; y++)
             {
-                Cells[x, y] = new GridCell();
+                var cellX = x * CellSideSize;
+                var cellY = y * CellSideSize;
+                var cellXSideSize = CellSideSize;
+                var cellYSideSize = CellSideSize;
+
+                if (x == CellsX - 1 && restX > 0)
+                    cellXSideSize = restX;
+
+                if (y == CellsY - 1 && restY > 0)
+                    cellYSideSize = restY;
+
+                Cells[x, y] = new GridCell(x * CellSideSize, y * CellSideSize, cellXSideSize, cellYSideSize);
             }
         }
     }
 
-    private bool IsWithinBounds(double x, double y)
+    public bool LinkGameObject(GameObject gameObject)
     {
-        return x >= 0 && x < TotalSize.X && y >= 0 && y < TotalSize.Y;
+        var gameObjectX = gameObject.X;
+        var gameObjectY = gameObject.Y;
+        var cell = FindCell(gameObjectX, gameObjectY);
+
+        return cell.AddGameObject(gameObject);
+    }
+
+    public GridCell FindCell(double x, double y)
+    {
+        int cellX = (int)(x / CellSideSize);
+        int cellY = (int)(y / CellSideSize);
+
+        return Cells[cellX, cellY];
     }
 }

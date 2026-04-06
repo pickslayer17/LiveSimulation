@@ -10,8 +10,6 @@ public abstract class GameObject
     public double Y { get; set; }
     private Grid Grid { get; set; }
 
-    private GameObject() { }
-
     public GameObject(double x, double y, Grid grid, string name = null)
     {
         Name = name;

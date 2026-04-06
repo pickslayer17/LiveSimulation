@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LiveSimulation.Models;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -6,12 +7,16 @@ namespace LiveSimulation
 {
     public class Game1 : Game
     {
+        private const int PreferredWidth = 1280;
+        private const int PreferredHeight = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = PreferredWidth;
+            _graphics.PreferredBackBufferHeight = PreferredHeight;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -44,9 +49,23 @@ namespace LiveSimulation
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            DrawGameObjects();
 
             base.Draw(gameTime);
+        }
+
+        private void DrawGameObjects()
+        {
+            var _pixel = new Texture2D(GraphicsDevice, 1, 1);
+            _pixel.SetData(new[] { Color.White });
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_pixel, new Rectangle(100, 100, 10, 10), Color.Red);
+            _spriteBatch.End();
+        }
+
+        private void InitGameObjects()
+        {
+            var grid = new Grid();
         }
     }
 }
