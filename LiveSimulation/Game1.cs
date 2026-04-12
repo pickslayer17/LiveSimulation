@@ -12,8 +12,7 @@ namespace LiveSimulation
         private const int PreferredHeight = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        private GameObject _gameObject;
+        private World _world;
 
         public Game1()
         {
@@ -29,9 +28,7 @@ namespace LiveSimulation
             // TODO: Add your initialization logic here
             var grid = CreateGrid();
             grid.InitializeCells();
-            _gameObject = new Fly();
-            var world = new World(grid);
-            world.AddGameObject(_gameObject, 200, 100);
+            _world = new World(grid);
 
             base.Initialize();
         }
@@ -40,6 +37,8 @@ namespace LiveSimulation
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            var fly = new Fly();
+            _world.AddGameObject(fly, 350, 100);
             // TODO: use this.Content to load your game content here
         }
 
@@ -57,18 +56,29 @@ namespace LiveSimulation
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            DrawGameObjects();
+            DrawWorld();
 
             base.Draw(gameTime);
         }
 
-        private void DrawGameObjects()
+        private void DrawWorld()
+        {
+            foreach (var gameObject in _world.GameObjects)
+            {
+                if (gameObject is Fly)
+                {
+                    DrawFly(gameObject);
+                }
+            }
+        }
+
+        private void DrawFly(GameObject gameObject)
         {
             var _pixel = new Texture2D(GraphicsDevice, 1, 1);
             _pixel.SetData(new[] { Color.White });
 
-            var x = _gameObject.X;
-            var y = _gameObject.Y;
+            var x = gameObject.X;
+            var y = gameObject.Y;
             _spriteBatch.Begin();
             _spriteBatch.Draw(_pixel, new Rectangle((int)x, (int)y, 10, 10), Color.Red);
             _spriteBatch.End();

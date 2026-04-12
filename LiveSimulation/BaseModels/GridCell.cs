@@ -21,17 +21,27 @@ public class GridCell
 
     public bool RemoveGameObject(GameObject gameObject)
     {
-        return GameObjects.Remove(gameObject);
+        if (GameObjects.Remove(gameObject))
+        {
+            gameObject.LinkToCell(null);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     internal bool AddGameObject(GameObject gameObject)
     {
-        if(GameObjects.Contains(gameObject))
+        if (GameObjects.Contains(gameObject))
         {
-            return false; 
+            return false;
         }
 
         GameObjects.Add(gameObject);
+        gameObject.LinkToCell(this);
 
         return true;
     }
