@@ -11,8 +11,8 @@ public class World
         _grid = grid;
     }
 
-    public void AddGameObject(GameObject gameObject)
+    public void AddGameObject(GameObject gameObject, double xCoordinate, double yCoordinate)
     {
-        _grid.LinkGameObject(gameObject);
+        _grid.LinkGameObject(gameObject, xCoordinate, yCoordinate);
     }
 }

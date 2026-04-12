@@ -29,9 +29,9 @@ namespace LiveSimulation
             // TODO: Add your initialization logic here
             var grid = CreateGrid();
             grid.InitializeCells();
-            _gameObject = new Fly(200, 100, grid);
+            _gameObject = new Fly();
             var world = new World(grid);
-            world.AddGameObject(_gameObject);
+            world.AddGameObject(_gameObject, 200, 100);
 
             base.Initialize();
         }

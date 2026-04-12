@@ -4,13 +4,14 @@ namespace LiveSimulation.BaseModels;
 
 public class Grid
 {
-    public readonly int GridPixelSizeX; 
+    public readonly int GridPixelSizeX;
     public readonly int GridPixelSizeY;
     public readonly int CellSideSize;
     public int CellsX { get; private set; }
     public int CellsY { get; private set; }
 
     private GridCell[,] Cells { get; set; }
+    private readonly object _sync = new();
 
     public Grid(int gridPixelSizeX, int gridPixelSizeY, int cellSideSize)
     {
@@ -60,12 +61,34 @@ public class Grid
         return Cells[cellX, cellY];
     }
 
-    internal bool LinkGameObject(GameObject gameObject)
+    internal bool LinkGameObject(GameObject gameObject, double xCoordinate, double yCoordinate)
     {
-        var gameObjectX = gameObject.X;
-        var gameObjectY = gameObject.Y;
-        var cell = FindCell(gameObjectX, gameObjectY);
+        if (IsPossibleToAddGameObject(gameObject, xCoordinate, yCoordinate))
+        {
+            var cell = FindCell(xCoordinate, yCoordinate);
+            lock (_sync)
+            {
+                if (cell.AddGameObject(gameObject))
+                {
+                    gameObject.X = xCoordinate;
+                    gameObject.Y = yCoordinate;
 
-        return cell.AddGameObject(gameObject);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsPossibleToAddGameObject(GameObject gameObject, double xCoordinate, double yCoordinate)
+    {
+        return true;
     }
 }
