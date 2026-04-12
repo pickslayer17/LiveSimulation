@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LiveSimulation.Models;
+namespace LiveSimulation.BaseModels;
 
 public class Grid
 {
@@ -52,20 +52,20 @@ public class Grid
         }
     }
 
-    public bool LinkGameObject(GameObject gameObject)
-    {
-        var gameObjectX = gameObject.X;
-        var gameObjectY = gameObject.Y;
-        var cell = FindCell(gameObjectX, gameObjectY);
-
-        return cell.AddGameObject(gameObject);
-    }
-
     public GridCell FindCell(double x, double y)
     {
         int cellX = (int)(x / CellSideSize);
         int cellY = (int)(y / CellSideSize);
 
         return Cells[cellX, cellY];
+    }
+
+    internal bool LinkGameObject(GameObject gameObject)
+    {
+        var gameObjectX = gameObject.X;
+        var gameObjectY = gameObject.Y;
+        var cell = FindCell(gameObjectX, gameObjectY);
+
+        return cell.AddGameObject(gameObject);
     }
 }

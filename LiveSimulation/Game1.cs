@@ -1,5 +1,5 @@
-﻿using LiveSimulation.GameModels;
-using LiveSimulation.Models;
+﻿using LiveSimulation.BaseModels;
+using LiveSimulation.GameModels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -30,6 +30,8 @@ namespace LiveSimulation
             var grid = CreateGrid();
             grid.InitializeCells();
             _gameObject = new Fly(200, 100, grid);
+            var world = new World(grid);
+            world.AddGameObject(_gameObject);
 
             base.Initialize();
         }

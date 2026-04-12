@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LiveSimulation.Models;
+namespace LiveSimulation.BaseModels;
 
 public abstract class GameObject
 {
@@ -8,15 +8,12 @@ public abstract class GameObject
     public string Name { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
-    private Grid Grid { get; set; }
 
-    public GameObject(double x, double y, Grid grid, string name = null)
+    public GameObject(double x, double y, string name = null)
     {
         Name = name;
         X = x;
         Y = y;
-        Grid = grid;
-        Grid.LinkGameObject(this);
     }
 }
 

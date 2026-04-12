@@ -1,4 +1,4 @@
-﻿using LiveSimulation.Models;
+﻿using LiveSimulation.BaseModels;
 
 namespace LiveSimulation.GameModels;
 

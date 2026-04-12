@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LiveSimulation.Models;
+namespace LiveSimulation.BaseModels;
 
 public class GridCell
 {
@@ -19,7 +19,12 @@ public class GridCell
         YSideSize = ySideSize;
     }
 
-    public bool AddGameObject(GameObject gameObject)
+    public bool RemoveGameObject(GameObject gameObject)
+    {
+        return GameObjects.Remove(gameObject);
+    }
+
+    internal bool AddGameObject(GameObject gameObject)
     {
         if(GameObjects.Contains(gameObject))
         {
@@ -29,10 +34,5 @@ public class GridCell
         GameObjects.Add(gameObject);
 
         return true;
-    }
-
-    public bool RemoveGameObject(GameObject gameObject)
-    {
-        return GameObjects.Remove(gameObject);
     }
 }
