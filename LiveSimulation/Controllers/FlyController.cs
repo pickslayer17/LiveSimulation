@@ -1,4 +1,5 @@
 ﻿using LiveSimulation.BaseModels;
+using System.Diagnostics;
 
 namespace LiveSimulation.Controllers;
 
@@ -10,6 +11,6 @@ public class FlyController : BaseController
 
     public override void Update()
     {
-        // Implement fly behavior here, e.g., random movement, seeking food, etc.
+        Debug.WriteLine($"Im a fly with coord {GameObject.X} and {GameObject.Y}");
     }
 }
