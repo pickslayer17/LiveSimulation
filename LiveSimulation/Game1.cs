@@ -25,7 +25,6 @@ namespace LiveSimulation
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             var grid = CreateGrid();
             grid.InitializeCells();
             _world = new World(grid);
@@ -39,7 +38,6 @@ namespace LiveSimulation
 
             var fly = new Fly();
             _world.AddGameObject(fly, 350, 100);
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -47,7 +45,7 @@ namespace LiveSimulation
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            _world.Update();
 
             base.Update(gameTime);
         }
